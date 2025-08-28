@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: none;
+        }
+        
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #37352f;
+            font-size: 14px;
+        }
+        
+        .currency-input {
+            border: none;
+            background: transparent;
+            text-align: right;
+            padding: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1db954;
+            width: auto;
+            min-width: 80px;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .currency-input:focus {
+            outline: 1px solid #1db954;
+            outline-offset: -1px;
+            border-radius: 2px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #0f62fe;
+            box-shadow: 0 0 0 2px rgba(15, 98, 254, 0.1);
+        }
+        
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 14px;
+        }
+        
+        .calculation-row:last-child {
+            border-bottom: 2px solid #37352f;
+            font-weight: 500;
+            margin-top: 6px;
+            padding-top: 8px;
+        }
+        
+        .calculation-row span:first-child {
+            font-weight: 400;
+            color: #37352f;
+        }
+        
+        .calculation-row span:last-child {
+            font-weight: 500;
+            color: #1db954;
+        }
+        
+        .total-row span:last-child {
+            color: #1db954;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .update-btn {
+            width: 100%;
+            padding: 10px;
+            background: #0f62fe;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+        }
+        
+        .update-btn:hover {
+            background: #0353e9;
+        }
+        
+        .currency {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="calculation-row">
+            <span>Subtotal</span>
+            <input type="number" id="subtotal" placeholder="0.00" step="0.01" min="0" class="currency-input">
+        </div>
+        
+        <div class="calculation-row">
+            <span>GST (15%)</span>
+            <span class="currency" id="gst">NZ$0.00</span>
+        </div>
+        
+        <div class="calculation-row total-row">
+            <span>Total</span>
+            <span class="currency" id="finalTotal">NZ$0.00</span>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return `NZ$${amount.toFixed(2)}`;
+        }
+        
+        function calculateTotals() {
+            const subtotalInput = document.getElementById('subtotal');
+            const subtotal = parseFloat(subtotalInput.value) || 0;
+            
+            // Calculate values
+            const gst = subtotal * 0.15;
+            const finalTotal = subtotal + gst;
+            
+            // Update display
+            document.getElementById('gst').textContent = formatCurrency(gst);
+            document.getElementById('finalTotal').textContent = formatCurrency(finalTotal);
+        }
+        
+        // Auto-calculate on input change
+        document.getElementById('subtotal').addEventListener('input', calculateTotals);
+        
+        // Calculate on page load
+        calculateTotals();
+    </script>
+</body>
+</html>
